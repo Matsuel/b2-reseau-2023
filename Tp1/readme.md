@@ -281,6 +281,14 @@ Déterminer...
 
 - combien il y a de machines dans le LAN auquel vous êtes connectés
 
+````bash
+213ms matsu ❯ nmap -sn 10.33.64.0/20
+Starting Nmap 7.94 ( https://nmap.org ) at 2023-10-19 11:38 Paris, Madrid (heure dÆÚtÚ)
+Nmap scan report for 10.33.64.0
+Host is up (0.0020s latency).
+Nmap done: 4096 IP addresses (894 hosts up) scanned in 169.64 seconds
+```
+
 > Allez-y mollo, on va vite flood le réseau sinon. :)
 
 ![Stop it](./img/stop.png)

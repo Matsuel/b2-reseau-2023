@@ -281,7 +281,7 @@ Déterminer...
 
 - combien il y a de machines dans le LAN auquel vous êtes connectés
 
-````bash
+```bash
 213ms matsu ❯ nmap -sn 10.33.64.0/20
 Starting Nmap 7.94 ( https://nmap.org ) at 2023-10-19 11:38 Paris, Madrid (heure dÆÚtÚ)
 Nmap scan report for 10.33.64.0

@@ -27,7 +27,8 @@ def ping(ip):
     response=0
     if (os.name=="posix"):
         response=os.system("ping -c 1 " + ip+" >/dev/null")
-    response = os.system("ping -n 1 " + ip+" > nul")
+    else:
+        response = os.system("ping -n 1 " + ip+" > nul")
     if response == 0:
         return("UP !")
     else:

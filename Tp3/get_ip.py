@@ -10,10 +10,10 @@ le deuxième élément de la liste qui est un tuple. On prend ensuite le deuxiè
 """
 def ip():
     if(os.name=="posix"):
-        print(psutil.net_if_addrs()[list(psutil.net_if_addrs().keys())[1]][0][1])
+        return(psutil.net_if_addrs()[list(psutil.net_if_addrs().keys())[1]][0][1])
         # print(psutil.net_if_addrs()['wlp2s0'][0][1])
     else:
-        print(psutil.net_if_addrs()['Wi-Fi'][1][1])
+        return(psutil.net_if_addrs()['Wi-Fi'][1][1])
 
 
-ip()
+print(ip())

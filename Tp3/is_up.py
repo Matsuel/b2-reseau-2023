@@ -5,16 +5,16 @@ import os
 def is_up(args):
     response=-1
     if len(args) < 2:
-        print("Veuillez préciser une adresse IP")
-        exit()
+        return("Veuillez préciser une adresse IP")
+        # exit()
     else:
         if (os.name=="posix"):
             response=os.system("ping -c 1 " + args[1]+" >/dev/null")
         else:
             response = os.system("ping -n 1 " + args[1]+" > nul")
     if response == 0:
-        print("UP !")
+        return ("UP !")
     else:
-        print("DOWN !")
+        return("DOWN !")
 
-is_up(argv)
+print(is_up(argv))

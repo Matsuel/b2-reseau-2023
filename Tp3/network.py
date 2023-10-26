@@ -6,18 +6,20 @@ import psutil
 
 
 def network(args):
+    rep=""
     if len(args)==3:
         if args[1] == "ping":
-            ping(args[2])
+            rep=ping(args[2])
         elif args[1] == "lookup":
-            lookup(args)
+            rep=lookup(args)
         else:
-            print(f"'{args[1]}' is not an available command. Déso.")
+            rep=(f"'{args[1]}' is not an available command. Déso.")
     elif (len(args)==2):
         if(args[1]=="ip"):
-            ip()
+            rep=ip()
         else:
-            print(f"'{args[1]}' is not an available command. Déso.")
+            rep=(f"'{args[1]}' is not an available command. Déso.")
+    print(rep)
 
 
 
@@ -27,19 +29,18 @@ def ping(ip):
         response=os.system("ping -c 1 " + ip+" >/dev/null")
     response = os.system("ping -n 1 " + ip+" > nul")
     if response == 0:
-        print("UP !")
+        return("UP !")
     else:
-        print("DOWN !")
+        return("DOWN !")
 
 def lookup(args):
     if len(args) < 2:
-        print("Veuillez préciser un nom de domaine")
-        exit()
-    print(socket.gethostbyname(args[-1]))
+        return("Veuillez préciser un nom de domaine")
+    return(socket.gethostbyname(args[-1]))
 
 def ip():
     if(os.name=="posix"):
-        print(psutil.net_if_addrs()['wlp2s0'][0][1])
-    print(psutil.net_if_addrs()['Wi-Fi'][1][1])
+        return(psutil.net_if_addrs()['wlp2s0'][0][1])
+    return(psutil.net_if_addrs()['Wi-Fi'][1][1])
 
 network(argv)

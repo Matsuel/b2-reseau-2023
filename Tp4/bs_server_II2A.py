@@ -2,6 +2,7 @@ import argparse
 import socket
 import sys
 import logging
+import time
 
 logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
@@ -40,6 +41,11 @@ print(f"Un client vient de se co et son IP c'est {addr[0]}.")
 logging.info(f"Un client {addr[0]} s'est connecté.")
 
 while True:
+
+    # Si pendant 1 minute il n'y a pas de client qui se connecte, on log un warning
+
+    if time.time() - time.time() > 60:
+        logging.warning("Aucun client ne s'est connecté pendant 1 minute.")
 
     try:
         data = conn.recv(1024)

@@ -24,7 +24,7 @@ else:
 
 host = '10.1.1.112'
 
-logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 logging.info(f"Le serveur tourne sur {host}:{port}")
 
 

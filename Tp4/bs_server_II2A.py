@@ -4,6 +4,8 @@ import sys
 import logging
 import time
 
+dateStart = time.time()
+
 logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
 parser=argparse.ArgumentParser()
@@ -42,10 +44,9 @@ logging.info(f"Un client {addr[0]} s'est connecté.")
 
 while True:
 
-    # Si pendant 1 minute il n'y a pas de client qui se connecte, on log un warning
-
-    if time.time() - time.time() > 60:
-        logging.warning("Aucun client ne s'est connecté pendant 1 minute.")
+    if (time.time() - dateStart) > 60:
+        dateStart = time.time()
+        logging.warn("Aucun client depuis plus de une minute.")
 
     try:
         data = conn.recv(1024)

@@ -24,9 +24,10 @@ else:
 
 host = '10.1.1.112'
 
-# On crée un objet logger qui va nous servir à écrire dans les logs
-logging.basicConfig(filename="server.log", format=f"%(asctime)s %(levelname)s %(message)s", filemode='w')
-logging.info(f"Le serveur tourne sur {host}:{port}")
+logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logging.info(f"Starting server on {host}:{port}.")
+
+
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

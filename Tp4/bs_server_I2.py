@@ -8,7 +8,7 @@ s.bind((host, port))
 
 s.listen(1)
 conn, addr = s.accept()
-print(f"Un client vient de se co et son IP c'est {addr}.")
+print(f"Un client vient de se co et son IP c'est {addr[0]}.")
 
 while True:
 

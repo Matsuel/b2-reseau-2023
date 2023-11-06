@@ -1,6 +1,8 @@
 import socket
 import sys
 
+strClient= input(str("Que veux-tu envoyer au serveur : "))
+
 # On définit la destination de la connexion
 host = '10.1.1.112'  # IP du serveur
 port = 13337               # Port choisir par le serveur
@@ -12,7 +14,6 @@ try:
     # Connexion au serveur
     s.connect((host, port))
     print(f"Connecté avec succès au serveur {host} sur le port {port}")
-    strClient= input(str("Que veux-tu envoyer au serveur : "))
 except ConnectionRefusedError:
     print("Le serveur n'est pas joignable")
     exit(1)

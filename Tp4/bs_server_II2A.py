@@ -45,7 +45,7 @@ while True:
         data = conn.recv(1024)
         if not data: break
         else:
-            logging.info(f"Le client {addr[0]} a envoyé {data}.")
+            logging.info(f"Le client {addr[0]} a envoyé {data.decode()}.")
             if str(data).__contains__("meo"):
                 conn.sendall(b"Meo a toi confrere.")
                 logging.info(f"Réponse envoyée au client {addr[0]} : Meo a toi confrere.")

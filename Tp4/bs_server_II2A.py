@@ -3,6 +3,8 @@ import socket
 import sys
 import logging
 
+logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+
 parser=argparse.ArgumentParser()
 parser.add_argument("-p", "--port", type=int, default=13337, action="store", help="Port d'écoute du serveur" )
 # parser.add_argument("-h","--help", action="store", help="Affiche l'aide")
@@ -24,30 +26,35 @@ else:
 
 host = '10.1.1.112'
 
-logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
-logging.info(f"Le serveur tourne sur {host}:{port}")
 
 
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host, port))  
+logging.info(f"Le serveur tourne sur {host}:{port}")
 
 s.listen(1)
 conn, addr = s.accept()
 print(f"Un client vient de se co et son IP c'est {addr[0]}.")
+logging.info(f"Un client {addr[0]} s'est connecté.")
 
 while True:
 
     try:
         data = conn.recv(1024)
         if not data: break
-        if str(data).__contains__("meo"):
-            conn.sendall(b"Meo a toi confrere.")
-        elif str(data).__contains__("waf"):
-            conn.sendall(b"ptdr t ki")
         else:
-            conn.sendall(b"Mes respects humble humain.")
+            logging.info(f"Le client {addr[0]} a envoyé {data}.")
+            if str(data).__contains__("meo"):
+                conn.sendall(b"Meo a toi confrere.")
+                logging.info(f"Réponse envoyée au client {addr[0]} : Meo a toi confrere.")
+            elif str(data).__contains__("waf"):
+                conn.sendall(b"ptdr t ki")
+                logging.info(f"Réponse envoyée au client {addr[0]} : ptdr t ki.")
+            else:
+                conn.sendall(b"Mes respects humble humain.")
+                logging.info(f"Réponse envoyée au client {addr[0]} : Mes respects humble humain.")
 
     except socket.error:
         print("Error Occured.")

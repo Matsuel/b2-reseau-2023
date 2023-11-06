@@ -1,7 +1,7 @@
 import socket
 import sys
 
-strClient= input(str("Que veux-tu envoyer au serveur : "))
+strClient= input("Que veux-tu envoyer au serveur : ")
 
 # On définit la destination de la connexion
 host = '10.1.1.112'  # IP du serveur

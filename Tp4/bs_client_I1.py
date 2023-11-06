@@ -24,4 +24,4 @@ s.close()
 print(f"Le serveur a répondu {repr(data)}")
 
 # On quitte le programme
-sys.exit(0)
+exit(0)

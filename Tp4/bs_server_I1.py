@@ -8,7 +8,8 @@ s.bind((host, port))
 
 s.listen(1)
 conn, addr = s.accept()
-print('Hi mate !', addr)
+print('Connected by', addr)
+conn.sendall(b'Hi mate !')
 
 while True:
 

@@ -12,11 +12,11 @@ try:
     # Connexion au serveur
     s.connect((host, port))
     print(f"Connecté avec succès au serveur {host} sur le port {port}")
+    strClient= input(str("Que veux-tu envoyer au serveur : "))
 except ConnectionRefusedError:
     print("Le serveur n'est pas joignable")
     exit(1)
 
-strClient= input(str("Que veux-tu envoyer au serveur : "))
 # Envoi de data bidon
 s.sendall(strClient.encode())
 

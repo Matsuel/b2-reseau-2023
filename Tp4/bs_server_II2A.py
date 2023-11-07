@@ -3,8 +3,7 @@ import socket
 import sys
 import logging
 import time
-
-dateStart = time.time()
+import threading
 
 logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
@@ -37,19 +36,29 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host, port))  
 logging.info(f"Le serveur tourne sur {host}:{port}")
 
-# while True:
-#     if (time.time() - dateStart) > 10:
-#         dateStart = time.time()
-#         logging.warn("Aucun client depuis plus de une minute.")
 
-print('\033[2;31;43m CHEESY \033[0;0m')
+last_connection_time = time.time()
+
+def check_connections():
+    global last_connection_time
+    while True:
+        time.sleep(60)  # Attendre une minute
+        if time.time() - last_connection_time > 60:
+            logging.warning("Aucun client ne s'est connecté pendant la dernière minute.")
+
+# Démarrer le thread de vérification des connexions
+threading.Thread(target=check_connections, daemon=True).start()
+
+
 
 s.listen(1)
-conn, addr = s.accept()
-print(f"Un client vient de se co et son IP c'est {addr[0]}.")
-logging.info(f"Un client {addr[0]} s'est connecté.")
+
 
 while True:
+    conn, addr = s.accept()
+    last_connection_time = time.time() 
+    print(f"Un client vient de se co et son IP c'est {addr[0]}.")
+    logging.info(f"Un client {addr[0]} s'est connecté.")
     try:
         data = conn.recv(1024)
         if not data: break

@@ -5,7 +5,7 @@ import logging
 import time
 import threading
 
-logging.basicConfig(filename='server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+logging.basicConfig(filename='/var/log/bs_server/bs_server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
 parser=argparse.ArgumentParser()
 parser.add_argument("-p", "--port", type=int, default=13337, action="store", help="Port d'écoute du serveur" )

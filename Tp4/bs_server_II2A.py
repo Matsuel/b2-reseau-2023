@@ -44,7 +44,7 @@ def check_connections():
     while True:
         time.sleep(60)  # Attendre une minute
         if time.time() - last_connection_time > 60:
-            logging.warning("Aucun client ne s'est connecté pendant la dernière minute.")
+            logging.warn("Aucun client ne s'est connecté pendant la dernière minute.")
 
 # Démarrer le thread de vérification des connexions
 threading.Thread(target=check_connections, daemon=True).start()

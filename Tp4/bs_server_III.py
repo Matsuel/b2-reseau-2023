@@ -74,7 +74,7 @@ while True:
         else:
             logging.info(f"Le client {addr[0]} a envoyé {data.decode()}.")
             print("\033[255m" + "INFO" + "\033[0m", f"Le client {addr[0]} a envoyé une opération : {data.decode()}.")
-            conn.sendall(eval(data.decode()).encode())
+            conn.sendall(str(eval(data.decode())).encode())
             logging.info(f"Resultat envoyé au client {addr[0]} : {eval(data.decode())}.")
     except socket.error:
         print("Error Occured.")

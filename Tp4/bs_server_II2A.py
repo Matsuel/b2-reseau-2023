@@ -37,19 +37,31 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host, port))  
 logging.info(f"Le serveur tourne sur {host}:{port}")
 
-while True:
-    if (time.time() - dateStart) > 10:
+for i in range(0, 10):
+    s.listen(1)
+    conn, addr = s.accept()
+    print(f"Un client vient de se co et son IP c'est {addr[0]}.")
+    logging.info(f"Un client {addr[0]} s'est connecté.")
+    break;
+    if time.time() - dateStart > 10:
         dateStart = time.time()
         logging.warn("Aucun client depuis plus de une minute.")
+        i=0
+    time.sleep(1.2)
 
-s.listen(1)
-conn, addr = s.accept()
-print(f"Un client vient de se co et son IP c'est {addr[0]}.")
-logging.info(f"Un client {addr[0]} s'est connecté.")
+# while True:
+#     if (time.time() - dateStart) > 10:
+#         dateStart = time.time()
+#         logging.warn("Aucun client depuis plus de une minute.")
+
+
+
+# s.listen(1)
+# conn, addr = s.accept()
+# print(f"Un client vient de se co et son IP c'est {addr[0]}.")
+# logging.info(f"Un client {addr[0]} s'est connecté.")
 
 while True:
-
-
     try:
         data = conn.recv(1024)
         if not data: break

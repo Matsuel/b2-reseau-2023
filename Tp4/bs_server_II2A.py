@@ -37,9 +37,10 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host, port))  
 logging.info(f"Le serveur tourne sur {host}:{port}")
 
-if (time.time() - dateStart) > 10:
-    dateStart = time.time()
-    logging.warn("Aucun client depuis plus de une minute.")
+while True:
+    if (time.time() - dateStart) > 10:
+        dateStart = time.time()
+        logging.warn("Aucun client depuis plus de une minute.")
 
 s.listen(1)
 conn, addr = s.accept()

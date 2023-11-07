@@ -55,7 +55,7 @@ logging.info(f"Réponse reçue du serveur {host} : {data.decode()}.")
 s.close()
 
 # Affichage de la réponse reçue du serveur
-print(f"Le serveur a répondu {repr(data.decode())}")
+print(f"Resultat de l'operation : {data.decode()}")
 
 # On quitte le programme
 exit(0)

@@ -4,6 +4,12 @@ import sys
 import logging
 import time
 import threading
+import os
+
+# Création du dossier de log s'il n'existe pas
+
+if not os.path.exists('/var/log/bs_server'):
+    os.makedirs('/var/log/bs_server')
 
 
 logging.basicConfig(filename='/var/log/bs_server/bs_server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')

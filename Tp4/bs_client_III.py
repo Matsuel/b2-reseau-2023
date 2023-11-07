@@ -24,6 +24,8 @@ def check_input(user_input):
             return "L'opération nécessite exactement deux nombres valides"
     return "L'opération n'est pas valide. Seulement les opérations +, -, * sont autorisées et il ne doit y avoir qu'un seul signe d'opération."
 
+if check_input(opeClient) != "True":
+    raise ValueError(check_input(opeClient))
 
 # On définit la destination de la connexion
 host = '10.1.1.112'  # IP du serveur

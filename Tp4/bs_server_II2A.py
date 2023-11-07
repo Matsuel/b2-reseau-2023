@@ -42,11 +42,12 @@ conn, addr = s.accept()
 print(f"Un client vient de se co et son IP c'est {addr[0]}.")
 logging.info(f"Un client {addr[0]} s'est connecté.")
 
+if (time.time() - dateStart) > 10:
+    dateStart = time.time()
+    logging.warn("Aucun client depuis plus de une minute.")
+
 while True:
 
-    if (time.time() - dateStart) > 60:
-        dateStart = time.time()
-        logging.warn("Aucun client depuis plus de une minute.")
 
     try:
         data = conn.recv(1024)
@@ -62,7 +63,6 @@ while True:
             else:
                 conn.sendall(b"Mes respects humble humain.")
                 logging.info(f"Réponse envoyée au client {addr[0]} : Mes respects humble humain.")
-
     except socket.error:
         print("Error Occured.")
         break

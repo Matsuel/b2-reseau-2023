@@ -5,6 +5,7 @@ import logging
 import time
 import threading
 
+
 logging.basicConfig(filename='/var/log/bs_server/bs_server.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
 parser=argparse.ArgumentParser()
@@ -67,18 +68,7 @@ while True:
         if not data: break
         else:
             logging.info(f"Le client {addr[0]} a envoyé {data.decode()}.")
-            if str(data).__contains__("meo"):
-                conn.sendall(b"Meo a toi confrere.")
-                logging.info(f"Réponse envoyée au client {addr[0]} : Meo a toi confrere.")
-                print("\033[255m" + "INFO" + "\033[0m", f"Réponse envoyée au client {addr[0]} : Meo a toi confrere.")
-            elif str(data).__contains__("waf"):
-                conn.sendall(b"ptdr t ki")
-                logging.info(f"Réponse envoyée au client {addr[0]} : ptdr t ki.")
-                print("\033[255m" + "INFO" + "\033[0m", f"Réponse envoyée au client {addr[0]} : ptdr t ki.")
-            else:
-                conn.sendall(b"Mes respects humble humain.")
-                logging.info(f"Réponse envoyée au client {addr[0]} : Mes respects humble humain.")
-                print("\033[255m" + "INFO" + "\033[0m", f"Réponse envoyée au client {addr[0]} : Mes respects humble humain.")
+            print("\033[255m" + "INFO" + "\033[0m", f"Le client {addr[0]} a envoyé {data.decode()}.")
     except socket.error:
         print("Error Occured.")
         break

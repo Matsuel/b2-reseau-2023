@@ -29,30 +29,37 @@ def checkInput(inputUsr:str)->bool:
 while True:
     # on récup une string saisie par l'utilisateur
     operation= input('Entrer une expression arithmétique simple: ')
-    if checkInput(operation) :
-        # on encode le message explicitement en UTF-8 pour récup un tableau de bytes
-        encoded_msg = operation.replace(' ', '').encode('utf-8')
+    try:
+        if checkInput(operation) :
+            # on encode le message explicitement en UTF-8 pour récup un tableau de bytes
+            encoded_msg = operation.replace(' ', '').encode('utf-8')
 
-        # on calcule sa taille, en nombre d'octets
-        msg_len = len(encoded_msg)
+            # on calcule sa taille, en nombre d'octets
+            msg_len = len(encoded_msg)
 
-        # on encode ce nombre d'octets sur une taille fixe de 4 octets
-        header = msg_len.to_bytes(4, byteorder='big')
+            # on encode ce nombre d'octets sur une taille fixe de 4 octets
+            header = msg_len.to_bytes(4, byteorder='big')
 
-        # on peut concaténer ce header avec le message, avant d'envoyer sur le réseau
-        payload = header + encoded_msg
+            # on peut concaténer ce header avec le message, avant d'envoyer sur le réseau
+            payload = header + encoded_msg
 
-        sock.send(payload)
-        print(f"Opération {encoded_msg.decode('utf-8')} envoyé au serveur.")
-        # on peut envoyer ça sur le réseau  
+            sock.send(payload)
+            print(f"Opération {encoded_msg.decode('utf-8')} envoyé au serveur.")
+            # on peut envoyer ça sur le réseau  
 
-        ope_result= sock.recv(1024).decode()
+            ope_result= sock.recv(1024).decode()
 
-        print(f"Résultat de l'opération : {ope_result}")
+            print(f"Résultat de l'opération : {ope_result}")
 
 
-    else:
-        print('Invalid input bro')
-        continue
+        else:
+            print('Invalid input bro')
+            continue
+    
+    except KeyboardInterrupt:
+        print("Interruption de l'utilisateur")
+        sock.close()
+        exit(1)
+
 
 sock.close()

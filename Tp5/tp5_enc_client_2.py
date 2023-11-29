@@ -49,6 +49,7 @@ while True:
             second_number= int(operation.split(operator)[1].replace(' ','')).to_bytes(1,byteorder='big')
             #On définit ensuite + à 01, - à 10 et *à 11
             operator= 1 if operator=="+" else 10 if operator=="-" else 11
+            print(operator)
             operator= operator.to_bytes(1,byteorder='big')
 
             # on calcule sa taille, en nombre d'octets 3, 2chiffres et 1 opérateur

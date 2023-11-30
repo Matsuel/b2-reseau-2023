@@ -25,7 +25,7 @@ while True:
         bytes_received = 0
         while bytes_received < msg_len:
             # Si on reçoit + que la taille annoncée, on lit 1024 par 1024 octets
-            chunks.append(client.recv(2))
+            chunks.append(client.recv(1))
             if not chunks:
                 raise RuntimeError('Invalid chunk received bro')
 
@@ -34,11 +34,12 @@ while True:
 
             #On décode les 2 nombres et l'opérateur
         first_number= int.from_bytes(chunks[0], byteorder='big')
-        print(first_number)
-        print(chunks)
+        ope= int.from_bytes(chunks[1], byteorder='big')
+        ope= "+" if ope == 1 else "-" if ope == 10 else "*"
+        second_number= int.from_bytes(chunks[2], byteorder='big')
         # ptit one-liner pas combliqué à comprendre pour assembler la liste en un seul message
-        # message_received = b"".join(chunks).decode('utf-8')
-        # print(f"Received from client {message_received} result {eval(message_received)}")
+        message_received = "".join([str(first_number), ope, str(second_number)])
+        print(f"Received from client {message_received} result {eval(message_received)}")
 
         # res= eval(message_received)
         # print("Result send to client")

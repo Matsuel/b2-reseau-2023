@@ -2,6 +2,7 @@ import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+#Fais en localhost car problème de pc donc en attendant pc pas puissant pour vm
 host='127.0.0.1'
 port=9999
 

@@ -12,5 +12,8 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(bytes(content,'utf8'))
 
 if __name__== "__main__":
-    server= HTTPServer(("127.0.0.1",8000),handler)
+    host="127.0.0.1"
+    port=8000
+    server= HTTPServer((host, port),handler)
+    print(f"Le serveur est disponible à l'adresse {host} sur le port {port}")
     server.serve_forever()

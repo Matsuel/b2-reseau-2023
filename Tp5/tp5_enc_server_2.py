@@ -41,8 +41,17 @@ while True:
         message_received = "".join([str(first_number), ope, str(second_number)])
         print(f"Received from client {message_received} result {eval(message_received)}")
 
-        # res= eval(message_received)
-        # print("Result send to client")
+        res= eval(message_received)
+
+        msg_len=1
+
+        header= msg_len.to_bytes(4, byteorder='big')
+
+        payload= header+ res.to_bytes(1, byteorder='big')
+
+        client.send(payload)
+
+        print(f"Result send to client {res}")
         # client.send(str(res).encode('utf-8'))
 
     except socket.error:

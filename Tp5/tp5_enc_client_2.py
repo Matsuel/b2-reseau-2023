@@ -17,7 +17,6 @@ def checkInput(inputUsr:str)->bool:
         if inputUsr.split(operator).__len__()==2:
             numbers= inputUsr.split(operator)
             if int(numbers[0])<4294967295  or int(numbers[1])<4294967295 :
-                print(inputUsr.split(operator)[0])
                 return True
             else:
                 return False
@@ -49,7 +48,6 @@ while True:
             second_number= int(operation.split(operator)[1].replace(' ','')).to_bytes(1,byteorder='big')
             #On définit ensuite + à 01, - à 10 et *à 11
             operator= 1 if operator=="+" else 10 if operator=="-" else 11
-            print(operator)
             operator= operator.to_bytes(1,byteorder='big')
 
             # on calcule sa taille, en nombre d'octets 3, 2chiffres et 1 opérateur
@@ -65,9 +63,27 @@ while True:
             print(f"Opération {operation} envoyé au serveur.")
             # on peut envoyer ça sur le réseau  
 
-            ope_result= sock.recv(1024).decode()
+            #On récupère la réponse du serveur sous forme de int
+            try:
+                msg_len = int.from_bytes(sock.recv(4), byteorder='big')
 
-            print(f"Résultat de l'opération : {ope_result}")
+                chunks = []
+
+                bytes_received = 0
+
+                while bytes_received < msg_len:
+                    chunks.append(sock.recv(1))
+                    if not chunks:
+                        raise RuntimeError('Invalid chunk received bro')
+
+                    bytes_received += len(chunks[-1])
+
+                res= int.from_bytes(chunks[0], byteorder='big')
+                print(f"Réponse du serveur: {res}")
+            
+            except:
+                print("Error occured bro.")
+                exit(1)
 
 
         else:

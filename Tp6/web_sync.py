@@ -21,11 +21,11 @@ def write_content(content,file):
         f.write(content)
         f.close()
     else:
-        if os.path.exists("./Tp6/web_page"):
-            os.chdir("./Tp6/web_page")
+        if os.path.exists("./Tp6/tmp/web_page"):
+            os.chdir("./Tp6/tmp/web_page")
         else:
-            os.mkdir("./Tp6/web_page")
-            os.chdir("./Tp6/web_page")
+            os.mkdir("./Tp6/tmp/web_page")
+            os.chdir("./Tp6/tmp/web_page")
         f= open(file,"w", encoding="utf-8")
         f.write(content)
         f.close()

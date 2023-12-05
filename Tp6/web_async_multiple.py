@@ -4,6 +4,7 @@ import requests
 import aiohttp
 import aiofiles
 import asyncio
+import time
 
 if len(sys.argv[1:])!=1:
     print("Usage: python3 web_sync.py <file_name>")
@@ -41,12 +42,11 @@ async def write_content(content,file):
     
 
 if __name__ == "__main__":
+    startTime= time.time()
     file_path = sys.argv[1]
-    print("Getting content from", file_path)
     sites= asyncio.run(get_file_content(file_path))
     for site in sites.split("\n"):
         file_name = site.split(".")[1]
         print(file_name)
-        print("Saving content to", file_name)
         asyncio.run(write_content(asyncio.run(get_content(site)),file_name))
-    print("Done!")
+    print(f"Done! In {time.time()-startTime} seconds")

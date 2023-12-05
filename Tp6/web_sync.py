@@ -34,7 +34,7 @@ def write_content(content,file):
 
 if __name__ == "__main__":
     url = sys.argv[1]
-    file_name = url.split("/")[-1].split('.')[1]+".html" if url[-1]!="/" else url.split("/")[-2].split('.')[1]+".html"
+    file_name = url.split(".")[1]+".html"
     print("Saving content to", file_name)
     print("Getting content from", url)
     write_content(get_content(url),file_name)

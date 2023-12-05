@@ -24,6 +24,7 @@ def write_content(content,file):
         if os.path.exists("./Tp6/tmp/web_page"):
             os.chdir("./Tp6/tmp/web_page")
         else:
+            os.mkdir("./Tp6/tmp")
             os.mkdir("./Tp6/tmp/web_page")
             os.chdir("./Tp6/tmp/web_page")
         f= open(file,"w", encoding="utf-8")

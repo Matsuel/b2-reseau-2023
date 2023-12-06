@@ -14,24 +14,25 @@ async def get_client_config():
     
 async def get_input(writer):
     while True:
-        msg = await aioconsole.ainput("Enter a message: ")
-        if msg == "exit":
-            sys.exit()
-        else:
-            writer.write(msg.encode())
-            await writer.drain()
+        msg = await aioconsole.ainput()
+        writer.write(json.dumps({'action': 'message', 'message': msg}).encode())
+        await writer.drain()
             
 
 async def async_receive(reader):
     while True:
         data = await reader.read(1024)
-        return data.decode()
+        print(data.decode())
+    
+async def join_chat(writer):
+    writer.write(json.dumps({'action': 'join'}).encode())
+    await writer.drain()
 
 async def main():
     config = await get_client_config()
     reader, writer = await asyncio.open_connection(config["server"], config["port"])
-    tasks = [get_input(writer), async_receive(reader)]
-    await asyncio.gather(*tasks)
+    await join_chat(writer)
+    await asyncio.gather(get_input(writer), async_receive(reader))
     
 if __name__ == "__main__":
     asyncio.run(main())

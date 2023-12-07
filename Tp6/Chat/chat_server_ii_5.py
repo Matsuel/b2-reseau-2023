@@ -30,8 +30,8 @@ async def handle_client_msg(reader, writer):
         message = json.loads(data.decode())
         # print(message["action"])
         if (message['action'] == 'join' and message['pseudo'].startswith("Hello")):
-            pseudo = message['pseudo'].split("|")[1]
-            print(f"{str(pseudo).capitalize()} joined : {addr}")
+            pseudo = str(message['pseudo']).split("|")[1].capitalize()
+            print(f"{pseudo} joined : {addr}")
             add_client(addr, reader, writer, pseudo)
             await send_join(pseudo, addr)
         else:
@@ -65,6 +65,7 @@ async def main():
 
     # ptit affichage côté serveur
     addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
+    os.system("clear") if os.name == "posix" else os.system("cls")
     print(f'Serving on {addrs}')
 
     # on lance le serveur

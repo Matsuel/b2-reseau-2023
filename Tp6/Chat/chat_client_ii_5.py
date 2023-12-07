@@ -27,6 +27,7 @@ async def async_receive(reader):
     
 #Voir avec Léo si c'est bien ça qu'il faut faire
 async def join_chat(writer):
+    os.system("clear") if os.name == "posix" else os.system("cls")
     pseudo = input("Enter your pseudo : ")
     writer.write(json.dumps({'action': 'join', 'pseudo': f"Hello|{pseudo}"}).encode())
     os.system("clear") if os.name == "posix" else os.system("cls")

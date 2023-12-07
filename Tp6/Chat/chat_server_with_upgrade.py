@@ -1,6 +1,7 @@
 import asyncio
 import os
 import json
+import random
 
 global CLIENTS 
 CLIENTS = {}
@@ -35,7 +36,7 @@ async def handle_client_msg(reader, writer):
                 pseudo = str(message['pseudo']).split("|")[1].capitalize()
                 print(f"{pseudo} joined : {addr}")
                 add_client(addr, reader, writer, pseudo)
-                await send_join(pseudo, addr)
+                await send_join(f"Annonce : {pseudo} a rejoint la chatroom",pseudo, addr)
             elif (message['action'] == 'exit'):
                 print(f"{CLIENTS[addr]['pseudo']} left : {addr}")
                 await send_to_all(f"Annonce : {CLIENTS[addr]['pseudo']} a quitté la chatroom", addr)
@@ -59,10 +60,10 @@ async def send_to_all(message, addr):
             CLIENTS[client]["w"].write(message.encode())
             await CLIENTS[client]["w"].drain()
 
-async def send_join(pseudo, addr):
+async def send_join(message,pseudo, addr):
     for client in CLIENTS:
         if CLIENTS[client]["pseudo"] != pseudo:
-            CLIENTS[client]["w"].write(f"Annonce : {pseudo} a rejoint la chatroom".encode())
+            CLIENTS[client]["w"].write(message.encode())
             await CLIENTS[client]["w"].drain()
 
 async def main():

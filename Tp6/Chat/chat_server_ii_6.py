@@ -42,7 +42,7 @@ async def handle_client_msg(reader, writer):
                 CLIENTS.pop(addr)
             else:
                 print(f"Message received from {CLIENTS[addr]["pseudo"]} : {message["message"]}")
-                await send_to_all(f"{CLIENTS[addr]["pseudo"]} : a dit {message["message"]}", addr)
+                await send_to_all(f"{CLIENTS[addr]["pseudo"]} a dit : {message["message"]}", addr)
 
         except Exception as e:
             break

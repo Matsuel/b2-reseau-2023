@@ -35,7 +35,7 @@ async def handle_client_msg(reader, writer):
             add_client(addr, reader, writer, pseudo)
             await send_join(pseudo, addr)
         else:
-            print(f"Message received from {addr} : {message["message"]}")
+            print(f"Message received from {CLIENTS[addr]["pseudo"]} : {message["message"]}")
             await send_to_all(message["message"], addr)
 
 def add_client(addr, reader, writer, pseudo):
@@ -47,7 +47,7 @@ def add_client(addr, reader, writer, pseudo):
 async def send_to_all(message, addr):
     for client in CLIENTS:
         if client != addr:
-            CLIENTS[client]["w"].write(f"{addr[0]}:{addr[1]} : a dit {message}".encode())
+            CLIENTS[client]["w"].write(f"{CLIENTS[addr]["pseudo"]} : a dit {message}".encode())
             await CLIENTS[client]["w"].drain()
 
 async def send_join(pseudo, addr):

@@ -47,7 +47,7 @@ def add_client(addr, reader, writer, pseudo):
 async def send_to_all(message, addr):
     for client in CLIENTS:
         if client != addr:
-            CLIENTS[client]["w"].write(f"{CLIENTS[addr]["pseudo"]} : a dit {message}".encode())
+            CLIENTS[client]["w"].write(f"{CLIENTS[addr]["pseudo"]} a dit : {message}".encode())
             await CLIENTS[client]["w"].drain()
 
 async def send_join(pseudo, addr):

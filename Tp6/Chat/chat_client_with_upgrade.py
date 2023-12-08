@@ -38,22 +38,44 @@ async def async_receive(reader):
             data = await reader.read(1024)
             if not data:
                 print("Serveur déconnecté")
-                break
-            print(data.decode())
+                os._exit(0)
+            message = json.loads(data.decode())
+            if (message['action']=='join'):
+                print(f"\033[38;2;{message['color'][0]};{message['color'][1]};{message['color'][2]}m{message['pseudo']}\033[0m {message['message']}")
+            elif (message['action']=='exit'):
+                print(f"Annonce \033[38;2;{message['color'][0]};{message['color'][1]};{message['color'][2]}m{message['pseudo']}\033[0m {message['message']}")
+            elif (message['action']=='message'):
+                print(f"[{str(message['hour'])}] \033[38;2;{message['color'][0]};{message['color'][1]};{message['color'][2]}m{message['pseudo']}\033[0m : {message['message']}")
+            else:
+                pass
         except asyncio.CancelledError or ConnectionResetError:
             os._exit(0)
     
 #Voir avec Léo si c'est bien ça qu'il faut faire
-async def join_chat(writer):
+async def join_chat(writer, reader):
     os.system("clear") if os.name == "posix" else os.system("cls")
     try:
         pseudo = input("Entre un pseudo siteplé : ")
         writer.write(json.dumps({'action': 'join', 'pseudo': f"Hello|{pseudo}"}).encode())
         os.system("clear") if os.name == "posix" else os.system("cls")
-        print(f"Bienvenue dans le chat bro ! {pseudo}")
         await writer.drain()
+        color = await get_color(reader)
+        print(f"Bienvenue dans le chat bro ! \033[38;2;{color[0]};{color[1]};{color[2]}m{pseudo}\033[0m")
     except asyncio.CancelledError:
         sys.exit(0)
+
+async def get_color(reader):
+    while True:
+        try:
+            data = await reader.read(1024)
+            if not data:
+                print("Serveur déconnecté")
+                os._exit(0)
+            message = json.loads(data.decode())
+            if (message['action']=='color'):
+                return message['color']
+        except asyncio.CancelledError or ConnectionResetError:
+            os._exit(0)
 
 async def main():
     config = await get_client_config()
@@ -62,7 +84,7 @@ async def main():
     except OSError or ConnectionRefusedError or ConnectionResetError or ConnectionError:
         print("Le serveur n'est pas disponible")
         sys.exit(1)
-    await join_chat(writer)
+    await join_chat(writer, reader)
     try:
         await asyncio.gather(get_input(writer), async_receive(reader))
     except asyncio.CancelledError or ConnectionResetError:

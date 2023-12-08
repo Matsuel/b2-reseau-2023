@@ -2,6 +2,7 @@ import asyncio
 import os
 import json
 import random
+import datetime
 
 global CLIENTS 
 CLIENTS = {}
@@ -31,19 +32,20 @@ async def handle_client_msg(reader, writer):
 
             # on décode et affiche le msg du client
             message = json.loads(data.decode())
-            # print(message["action"])
             if (message['action'] == 'join' and message['pseudo'].startswith("Hello")):
                 pseudo = str(message['pseudo']).split("|")[1].capitalize()
-                print(f"{pseudo} joined : {addr}")
                 add_client(addr, reader, writer, pseudo)
-                await send_join(f"Annonce : {pseudo} a rejoint la chatroom",pseudo, addr)
+                await send_color(addr)
+                print(f"\033[38;2;{CLIENTS[addr]['color'][0]};{CLIENTS[addr]['color'][1]};{CLIENTS[addr]['color'][2]}m{pseudo}\033[0m joined : {addr}")
+                await send_join(json.dumps({'action': 'join', 'pseudo': pseudo, 'color': CLIENTS[addr]["color"], 'message':'a rejoint la chatroom.', 'addr':addr}),pseudo)
             elif (message['action'] == 'exit'):
-                print(f"{CLIENTS[addr]['pseudo']} left : {addr}")
-                await send_to_all(f"Annonce : {CLIENTS[addr]['pseudo']} a quitté la chatroom", addr)
+                print(f"\033[38;2;{CLIENTS[addr]['color'][0]};{CLIENTS[addr]['color'][1]};{CLIENTS[addr]['color'][2]}m{CLIENTS[addr]['pseudo']}\033[0m left : {addr}")
+                await send_to_all(json.dumps({'action': 'exit', 'pseudo': CLIENTS[addr]['pseudo'], 'color': CLIENTS[addr]["color"], 'message':'a quitté la chatroom.', 'addr':addr}), addr)
                 CLIENTS.pop(addr)
             else:
-                print(f"Message received from {CLIENTS[addr]["pseudo"]} : {message["message"]}")
-                await send_to_all(f"{CLIENTS[addr]["pseudo"]} a dit : {message["message"]}", addr)
+                hour = datetime.datetime.now().strftime("%H:%M")
+                print(f"Message received from \033[38;2;{CLIENTS[addr]['color'][0]};{CLIENTS[addr]['color'][1]};{CLIENTS[addr]['color'][2]}m{CLIENTS[addr]['pseudo']}\033[0m : {message['message']} at {hour}")
+                await send_to_all(json.dumps({'action': 'message', 'hour': hour  , 'pseudo': CLIENTS[addr]['pseudo'], 'color': CLIENTS[addr]["color"], 'message':message['message'], 'addr':addr}), addr)
 
         except Exception as e:
             break
@@ -53,6 +55,7 @@ def add_client(addr, reader, writer, pseudo):
     CLIENTS[addr]["r"] = reader
     CLIENTS[addr]["w"] = writer
     CLIENTS[addr]["pseudo"] = pseudo
+    CLIENTS[addr]["color"] = [random.randint(0,255),random.randint(0,255),random.randint(0,255)]
 
 async def send_to_all(message, addr):
     for client in CLIENTS:
@@ -60,11 +63,15 @@ async def send_to_all(message, addr):
             CLIENTS[client]["w"].write(message.encode())
             await CLIENTS[client]["w"].drain()
 
-async def send_join(message,pseudo, addr):
+async def send_join(message,pseudo):
     for client in CLIENTS:
         if CLIENTS[client]["pseudo"] != pseudo:
             CLIENTS[client]["w"].write(message.encode())
             await CLIENTS[client]["w"].drain()
+
+async def send_color(addr):
+    CLIENTS[addr]["w"].write(json.dumps({'action': 'color', 'color': CLIENTS[addr]["color"]}).encode())
+    await CLIENTS[addr]["w"].drain()
 
 async def main():
     config= await get_server_config()

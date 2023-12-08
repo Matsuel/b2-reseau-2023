@@ -4,13 +4,22 @@ import aiofiles
 import sys
 import json
 import os
+import argparse
 
 async def get_client_config():
-    os.chdir("./Tp6/Chat")
-    async with aiofiles.open("config.json", "r") as f:
-        config = json.loads(await f.read())
-        os.chdir("../..")
-        return config
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--port", help="Port du serveur", type=int, required=False)
+    parser.add_argument("-a", "--addr", help="Adresse du serveur", type=str, required=False)
+    args = parser.parse_args()
+    print(args)
+    if os.path.isfile("./Tp6/Chat/config.client.json") and args.addr == None and args.port == None:
+        os.chdir("./Tp6/Chat")
+        with open("config.client.json", "r") as f:
+            config = json.load(f)
+            os.chdir("../..")
+            return config
+    else:
+        return {"server":args.addr, "port":args.port}
     
 def supprimer_derniere_ligne():
     sys.stdout.write("\033[F")  # Déplacer le curseur en haut

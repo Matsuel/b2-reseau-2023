@@ -3,16 +3,28 @@ import os
 import json
 import random
 import datetime
+import argparse
+
+
 
 global CLIENTS 
 CLIENTS = {}
 
 async def get_server_config():
-    os.chdir("./Tp6/Chat")
-    with open("config.json", "r") as f:
-        config = json.load(f)
-        os.chdir("../..")
-        return config
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--port", help="Port du serveur", type=int, required=False)
+    parser.add_argument("-a", "--addr", help="Adresse du serveur", type=str, required=False)
+    args = parser.parse_args()
+    print(args)
+    if os.path.isfile("./Tp6/Chat/config.server.json") and args.addr == None and args.port == None:
+        os.chdir("./Tp6/Chat")
+        with open("config.server.json", "r") as f:
+            config = json.load(f)
+            os.chdir("../..")
+            return config
+    else:
+        return {"server":args.addr, "port":args.port}
+    
 
 # cette fonction sera appelée à chaque fois qu'on reçoit une connexion d'un client
 async def handle_client_msg(reader, writer):

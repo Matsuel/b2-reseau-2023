@@ -33,7 +33,7 @@ async def async_receive(reader):
             data = await reader.read(1024)
             if not data:
                 print("Serveur déconnecté")
-                break
+                os._exit(0)
             print(data.decode())
         except asyncio.CancelledError or ConnectionResetError:
             os._exit(0)

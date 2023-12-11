@@ -38,7 +38,7 @@ async def handle_client_msg(reader, writer):
             addr = writer.get_extra_info('peername')
 
             # si le client n'envoie rien, il s'est sûrement déco
-            if data == b'':
+            if not data:
                 break
 
             # on décode et affiche le msg du client
@@ -62,7 +62,10 @@ async def handle_client_msg(reader, writer):
                 print(f"Message received from \033[38;2;{CLIENTS[addr]['color'][0]};{CLIENTS[addr]['color'][1]};{CLIENTS[addr]['color'][2]}m{CLIENTS[addr]['pseudo']}\033[0m : {message.split('|')[1]} at {hour}")
                 await send_to_all(f"message|[{hour}] \033[38;2;{CLIENTS[addr]['color'][0]};{CLIENTS[addr]['color'][1]};{CLIENTS[addr]['color'][2]}m{CLIENTS[addr]['pseudo']}\033[0m : {message.split('|')[1]}|addr:{addr}", addr)
 
-        except Exception as e:
+        except Exception:
+            print(f"\033[38;2;{CLIENTS[addr]['color'][0]};{CLIENTS[addr]['color'][1]};{CLIENTS[addr]['color'][2]}m{CLIENTS[addr]['pseudo']}\033[0m left : {addr}")
+            await send_to_all(f"exit|\033[38;2;{CLIENTS[addr]['color'][0]};{CLIENTS[addr]['color'][1]};{CLIENTS[addr]['color'][2]}m{CLIENTS[addr]['pseudo']}\033[0m a quitté la chatroom.|addr:{addr}", addr)
+            CLIENTS.pop(addr)
             break
 
 

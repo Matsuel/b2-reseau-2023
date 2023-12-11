@@ -34,12 +34,14 @@ async def get_input(writer):
                 await writer.drain()
                 os._exit(0)
             elif msg.startswith("/image"):
-                supprimer_derniere_ligne()
-                print(f"Image envoyée : {msg.split(' ')[1]}")
-                my_image= AsciiArt.from_image('./Tp6/Chat/img/flower.png')
-                writer.write(f"image|{my_image.to_ascii()}".encode())
-                await writer.drain()
-
+                if os.path.isfile('./Tp6/Chat/img/'+msg.split(' ')[1]):
+                    supprimer_derniere_ligne()
+                    print(f"Image envoyée : {msg.split(' ')[1]}")
+                    my_image= AsciiArt.from_image('./Tp6/Chat/img/'+msg.split(' ')[1])
+                    writer.write(f"image|{my_image.to_ascii()}".encode())
+                    await writer.drain()
+                else:
+                    print("L'image n'existe pas ou alors elle n'est pas dans le dossier img")
             elif msg!="":
                 supprimer_derniere_ligne()
                 print(f"Message envoyé : {msg}")

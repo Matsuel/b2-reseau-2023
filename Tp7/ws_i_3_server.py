@@ -13,15 +13,15 @@ async def handle_client_msg(websocket, path):
             message = await websocket.recv()
             if not message:
                 break
-            message = message.split("|")
-            if message[0]=="join":
-                pseudo = message[1].capitalize()
+            message = json.loads(message)
+            if message["type"] == "join":
+                pseudo = message["pseudo"].capitalize()
                 print(f"{pseudo} joined : {addr}")
                 add_client(addr, websocket, pseudo)
                 await send_join(pseudo, websocket)
             else:
-                print(f"Message received from {CLIENTS[addr]['pseudo']} : {message[1]}")
-                await send_to_all(f"{CLIENTS[addr]['pseudo']} : {message[1]}", websocket)
+                print(f"Message received from {CLIENTS[addr]['pseudo']} : {message["message"]} ")
+                await send_to_all(f"{CLIENTS[addr]['pseudo']} : {message["message"]}", websocket)
 
         except:
             print(f"{CLIENTS[addr]['pseudo']} disconnected")

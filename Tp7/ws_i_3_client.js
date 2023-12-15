@@ -5,9 +5,13 @@ websocket.onopen = function (event) {
     console.log("Connection established!");
     websocket.send(JSON.stringify({type:"join",pseudo:username}));
     websocket.onmessage = function (event) {
-        const messageDiv = document.createElement("div");
+        const wrapperTitle = document.createElement("div");
+        wrapperTitle.classList.add("wrapper-title");
+        const messageDiv = document.createElement("h1");
+        messageDiv.classList.add("join-message");
         messageDiv.innerHTML = event.data;
-        document.getElementById("output").appendChild(messageDiv);
+        wrapperTitle.appendChild(messageDiv);
+        document.getElementById("output").appendChild(wrapperTitle);
     }
 }
 
@@ -16,6 +20,7 @@ function send(){
     const inputValue=document.getElementById("input").value;
     document.getElementById("input").value="";
     const messageDiv = document.createElement("div");
+    messageDiv.classList.add("message");
     messageDiv.innerHTML = "Vous avez dit: "+inputValue;
     document.getElementById("output").appendChild(messageDiv);
     websocket.send(JSON.stringify({type:"message",message:inputValue}));
@@ -25,4 +30,12 @@ function send(){
         messageDiv.innerHTML = event.data;
         document.getElementById("output").appendChild(messageDiv);
     }
+}
+
+function clearPlaceholder(){
+    document.getElementById("input").placeholder="";
+}
+
+function setPlaceholder(){
+    document.getElementById("input").placeholder="Entrez votre message";
 }

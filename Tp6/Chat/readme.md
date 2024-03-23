@@ -3,7 +3,7 @@
 ## Lancement du serveur:
 
 ```py
-python ./Tp6/Chat/server.py
+python ./Tp6/Chat/server.py -p port_pour_le_serveur -a ladresse_pour_le_serveur
 ```
 
 *Possibilité d'utiliser des arguments afin de lancer le serveur sur une ip voulue avec les arguments -p ou --port et -a ou --addr*
@@ -11,7 +11,7 @@ python ./Tp6/Chat/server.py
 ## Lancement d'un client
 
 ```py
-python ./Tp6/Chat/client.py
+python ./Tp6/Chat/client.py -p le_port_du_serveur -a ladresse_du_serveur
 ```
 
 *Possibilité d'utiliser des arguments afin de lancer le serveur sur une ip voulue avec les arguments -p ou --port et -a ou --addr*
